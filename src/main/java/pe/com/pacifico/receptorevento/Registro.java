@@ -16,16 +16,16 @@ public class Registro {
     private String contenido;
     private String email;
     private DateTime fechaEvento;
-    private Double id;
     private long key = -1;
     private String messageId;
+    private String nombre;
 
     public Registro(String contenido) {
         final Map<String, Object> retMap = new Gson().fromJson(contenido, new TypeToken<HashMap<String, Object>>() {
         }.getType());
         this.email = (String) retMap.get("email");
         this.messageId = (String) retMap.get("messageId");
-        this.id = (double) retMap.get("id");
+        this.nombre = (String) retMap.get("nombre");
         this.contenido = (String) retMap.get("contenido");
     }
 
@@ -41,16 +41,16 @@ public class Registro {
         return fechaEvento;
     }
 
-    public Double getId() {
-        return id;
-    }
-
     public long getKey() {
         return key;
     }
 
     public String getMessageId() {
         return messageId;
+    }
+
+    public String getNombre() {
+        return nombre;
     }
 
     public void setContenido(final String contenido) {
@@ -65,16 +65,16 @@ public class Registro {
         this.fechaEvento = fechaEvento;
     }
 
-    public void setId(final Double id) {
-        this.id = id;
-    }
-
     public void setKey(long key) {
         this.key = key;
     }
 
     public void setMessageId(final String messageId) {
         this.messageId = messageId;
+    }
+
+    public void setNombre(final String nombre) {
+        this.nombre = nombre;
     }
 
 }

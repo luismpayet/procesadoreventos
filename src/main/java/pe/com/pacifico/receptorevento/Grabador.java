@@ -6,7 +6,7 @@ import java.util.Properties;
 public class Grabador {
 
     private final static String DB_PASSWORD = "DB_PASSWORD";
-    private final static String DB_SQL_INSERT = "insert into registro (id_evento, fecha_evento, id_mensaje, texto_mensaje) values (?, ?, ? , ?)";
+    private final static String DB_SQL_INSERT = "insert into registro (id_evento, fecha_evento, nombre, texto) values (?, ?, ? , ?)";
     private final static String DB_STRING = "DB_STRING";
     private final static String DB_USER_NAME = "DB_USER_NAME";
 
@@ -27,16 +27,15 @@ public class Grabador {
         stmtInsert = conn.prepareStatement(DB_SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
     }
 
-    public String grabar() throws SQLException {
+    public void grabar() throws SQLException {
         conectar();
         insertar();
-        return null;
     }
 
     public void insertar() throws SQLException {
         stmtInsert.setString(1, registro.getMessageId());
         stmtInsert.setDate(2, new java.sql.Date(registro.getFechaEvento().getMillis()));
-        stmtInsert.setDouble(3, registro.getId());
+        stmtInsert.setString(3, registro.getNombre());
         stmtInsert.setString(4, registro.getContenido());
         stmtInsert.executeUpdate();
         ResultSet rs = stmtInsert.getGeneratedKeys();

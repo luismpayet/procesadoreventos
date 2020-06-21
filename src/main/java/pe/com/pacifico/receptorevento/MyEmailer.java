@@ -13,9 +13,8 @@ public class MyEmailer {
     private static final String SMTP_AUTH_USER = "SMTP_USER";
     private static final String SMTP_HOST_NAME = "SMTP_SERVER";
     private static final String SMTP_ORIGEN = "SMTP_ORIGEN";
-
-    private final Registro registro;
     private Session mailSession;
+    private final Registro registro;
 
     public MyEmailer(final Registro registro) {
         this.registro = registro;
@@ -31,19 +30,13 @@ public class MyEmailer {
         mailSession = Session.getDefaultInstance(properties, auth);
     }
 
-    public BodyPart getBodyPart(String msg) throws MessagingException {
-        final BodyPart part1 = new MimeBodyPart();
-        part1.setContent(String.format(msg, registro.getMessageId()), "text/html");
-        return part1;
-    }
-
     public MimeMessage crearMensaje() throws MessagingException {
         final MimeMessage message = new MimeMessage(mailSession);
         final Multipart multipart = new MimeMultipart("alternative");
         StringBuilder sb = new StringBuilder();
-        sb.append("<p>Hola,</p><p>Gracias por su mensaje <b>%s</b>.<p>El mensaje ha sido registrado en la base de datos.</p>");
-        sb.append(String.format("<p>La llave primaria del registro es: [%d]", registro.getKey()));
-        sb.append(String.format("<p>El contenido de su mensaje fue: [%s]", registro.getContenido()));
+        sb.append(String.format("<p>Hola %s,</p><p>Gracias por su mensaje <b>%s</b>.", registro.getNombre(), registro.getMessageId()));
+        sb.append(String.format("<p>El mensaje ha sido registrado en la base de datos. La llave primaria del registro es: [%d]", registro.getKey()));
+        sb.append(String.format("<p>El contenido de su mensaje fue:<br/>%s</p>", registro.getContenido()));
         multipart.addBodyPart(getBodyPart(sb.toString()));
         message.setFrom(new InternetAddress(System.getenv(SMTP_ORIGEN)));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(registro.getEmail()));
@@ -60,6 +53,12 @@ public class MyEmailer {
         transport.connect();
         transport.sendMessage(message, message.getAllRecipients());
         transport.close();
+    }
+
+    public BodyPart getBodyPart(String msg) throws MessagingException {
+        final BodyPart part1 = new MimeBodyPart();
+        part1.setContent(String.format(msg, registro.getMessageId()), "text/html");
+        return part1;
     }
 
     private static class SMTPAuthenticator extends javax.mail.Authenticator {
