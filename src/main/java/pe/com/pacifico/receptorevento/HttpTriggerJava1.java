@@ -33,7 +33,8 @@ public class HttpTriggerJava1 {
         }
         try {
             Procesador prc = new Procesador();
-            String idMensaje = prc.procesarMensaje(body);
+            String mensaje = prc.extraerMensaje(body);
+            String idMensaje = prc.procesarMensaje(mensaje);
             return request.createResponseBuilder(HttpStatus.OK).body(String.format("Mensaje %s procesado", idMensaje)).build();
         } catch (Exception ex) {
             String msg = String.format("Error al procesar mensaje: %s  ", ex.getMessage());

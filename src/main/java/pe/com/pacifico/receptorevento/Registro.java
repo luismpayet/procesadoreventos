@@ -14,23 +14,37 @@ import java.util.Map;
 public class Registro {
 
     private String contenido;
+    private String dni;
     private String email;
     private DateTime fechaEvento;
     private long key = -1;
     private String messageId;
     private String nombre;
+    private String mensaje;
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
 
     public Registro(String contenido) {
-        final Map<String, Object> retMap = new Gson().fromJson(contenido, new TypeToken<HashMap<String, Object>>() {
-        }.getType());
+        final Map<String, Object> retMap = new Gson().fromJson(contenido, new TypeToken<HashMap<String, Object>>() {}.getType());
         this.email = (String) retMap.get("email");
         this.messageId = (String) retMap.get("messageId");
         this.nombre = (String) retMap.get("nombre");
         this.contenido = (String) retMap.get("contenido");
+        this.dni = (String) retMap.get("dni");
     }
 
     public String getContenido() {
         return contenido;
+    }
+
+    public String getDni() {
+        return dni;
     }
 
     public String getEmail() {
@@ -55,6 +69,10 @@ public class Registro {
 
     public void setContenido(final String contenido) {
         this.contenido = contenido;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
     public void setEmail(final String email) {

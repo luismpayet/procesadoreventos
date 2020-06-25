@@ -35,6 +35,7 @@ public class MyEmailer {
         final Multipart multipart = new MimeMultipart("alternative");
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("<p>Hola %s,</p><p>Gracias por su mensaje <b>%s</b>.", registro.getNombre(), registro.getMessageId()));
+        sb.append(String.format("<p>La respuesta a su consulta de DNI fue: %s", registro.getMensaje()));
         sb.append(String.format("<p>El mensaje ha sido registrado en la base de datos. La llave primaria del registro es: [%d]", registro.getKey()));
         sb.append(String.format("<p>El contenido de su mensaje fue:<br/>%s</p>", registro.getContenido()));
         multipart.addBodyPart(getBodyPart(sb.toString()));
